@@ -40,20 +40,29 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         NewsArticle article = articles.get(position);
         holder.title.setText(article.getTitle());
         holder.date.setText(article.getPubDate());
-        Picasso.get().load(article.getImage_url()).into(holder.image);
+
+
+        if(article.getImage_url()==null || article.getImage_url().isEmpty()){
+            holder.image.setImageResource(R.drawable.alt_image);
+        }else {
+            Picasso.get().load(article.getImage_url()).into(holder.image);
+        }
 
         //-----------------buged area--------------------------------
         holder.readMorebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String url = article.getLink();
-                if (url != null && !url.isEmpty()) {
-                    // Create an Intent to open the URL in a browser
+                if (url == null || url.isEmpty()) {
+                    //if link not available
+                    Toast.makeText(context, "Link not available", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    // if link is available opens browser with link
+
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     context.startActivity(browserIntent);
-                } else {
-                    // Let the user know if there is no link
-                    Toast.makeText(context, "Link not available", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
