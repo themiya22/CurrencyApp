@@ -11,8 +11,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 
@@ -29,7 +35,7 @@ public class ConverterActivity extends AppCompatActivity {
 
     //API config
     private static final String API_KEY = "fca_live_EfykldLsC9ilp6eghX4GRJWkmlvHEmkoeu9e8f5X";
-    private static final String API_URL = "https://api.freecurrencyapi.com/v1/latest?apikey";
+    private static final String API_URL = "https://api.freecurrencyapi.com/v1/latest";
 
     //network config (referred from AI: Gemini)
     private RequestQueue requestQueue;
@@ -49,7 +55,7 @@ public class ConverterActivity extends AppCompatActivity {
         amountEditText = findViewById(R.id.TxtAmount);
         fromSpinner = findViewById(R.id.spinner_FROM);
         toSpinner = findViewById(R.id.spinner_To);
-        resultLabelTextView = findViewById(R.id.txtResults);
+        resultLabelTextView = findViewById(R.id.lblResults);
         Button btnConvert = findViewById(R.id.btnConvert);
         Button btnClear = findViewById(R.id.btnClear);
         Button btnHome = findViewById(R.id.btnHome);
@@ -96,6 +102,7 @@ public class ConverterActivity extends AppCompatActivity {
         amountEditText.setText("");
         fromSpinner.setSelection(0);
         toSpinner.setSelection(0);
+        resultTextView.setText(getString(R.string.converter_initial_value));
         Toast.makeText(this, "Fields Cleared", Toast.LENGTH_SHORT).show();
     }
 
@@ -114,6 +121,42 @@ public class ConverterActivity extends AppCompatActivity {
     }
 
     private void fetchExchangeRate(String fromCurrency, String toCurrency, double amount) {
+        String url = API_URL +
+                "?apikey=" + API_KEY +
+                "&base_currency=" + fromCurrency +
+                "&currencies=" + toCurrency;
+
+        // JsonObjectRequest is used, as demonstrated in Worksheet 9 for fetching data
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    // Manual JSON Parsing (Worksheet 9 pattern for accessing attributes)
+                    JSONObject data = response.getJSONObject("data");
+
+                    // Get the exchange rate value using the 'to' currency as the key
+                    double rate = data.getDouble(toCurrency);
+
+                    // Calculation: Converted_Amount = Input_Amount * Exchange_Rate
+                    double convertedAmount = amount * rate;
+
+                    displayConversionResult(convertedAmount, toCurrency);
+                    // Use a simple Toast for success feedback (Worksheet 6 pattern)
+                    Toast.makeText(ConverterActivity.this, "Conversion successful", Toast.LENGTH_SHORT).show();
+
+                } catch (org.json.JSONException e) {
+                    Toast.makeText(ConverterActivity.this, "API Error: Invalid response or currency not found.", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Simple error handling using Toast (Worksheet 6 pattern)
+                Toast.makeText(ConverterActivity.this, "ERROR: API request failed (Check API Key/Internet).", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        requestQueue.add(request);
     }
 
     private void displayConversionResult(double result, String currencyCode) {

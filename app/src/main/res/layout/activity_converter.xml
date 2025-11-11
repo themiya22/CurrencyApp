@@ -149,24 +149,28 @@
         android:id="@+id/btnClear"
         android:layout_width="168dp"
         android:layout_height="44dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="122dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="105dp"
+        android:layout_marginBottom="1dp"
         android:text="Clear"
         app:layout_constraintBottom_toTopOf="@+id/btnHome"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtResults"
-        app:layout_constraintVertical_bias="0.595" />
+        app:layout_constraintTop_toBottomOf="@+id/txtResults" />
 
     <Button
         android:id="@+id/btnHome"
         android:layout_width="168dp"
         android:layout_height="44dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="60dp"
         android:text="Home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnClear" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
