@@ -70,13 +70,13 @@ public class NewsActivity extends AppCompatActivity {
                 }
 
 
-                Toast.makeText(NewsActivity.this, "api request successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewsActivity.this, " API request successful", Toast.LENGTH_SHORT).show();
 
             }
         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(NewsActivity.this, "ERROR: api request failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewsActivity.this, "ERROR: API request failed", Toast.LENGTH_SHORT).show();
 
                     }
                 });
