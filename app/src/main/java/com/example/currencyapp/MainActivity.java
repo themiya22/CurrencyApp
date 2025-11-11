@@ -28,4 +28,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NewsActivity.class);
         startActivity(intent);
     }
+
+    public void openConverterActivity(View view) {
+        Intent intent = new Intent(this, ConverterActivity.class);
+        startActivity(intent);
+    }
+
+
+
+
+
+
 }
