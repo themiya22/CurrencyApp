@@ -143,7 +143,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblResults"
-        tools:text="1.07 EUR"/>
+        tools:text="1.07 EUR" />
 
     <Button
         android:id="@+id/btnClear"
