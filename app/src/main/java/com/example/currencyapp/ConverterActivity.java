@@ -29,11 +29,8 @@ public class ConverterActivity extends AppCompatActivity {
     private Spinner toSpinner;
     private TextView resultLabelTextView;
     private TextView resultTextView;
-    private Button btnConvert;
-    private Button btnClear;
-    private Button btnHome;
 
-    //API config
+    //API config (referred from AI tool:Gemini)
     private static final String API_KEY = "fca_live_EfykldLsC9ilp6eghX4GRJWkmlvHEmkoeu9e8f5X";
     private static final String API_URL = "https://api.freecurrencyapi.com/v1/latest";
 
@@ -103,45 +100,47 @@ public class ConverterActivity extends AppCompatActivity {
         fromSpinner.setSelection(0);
         toSpinner.setSelection(0);
         resultTextView.setText(getString(R.string.converter_initial_value));
-        Toast.makeText(this, "Fields Cleared", Toast.LENGTH_SHORT).show();
     }
 
     private void performConversion() {
-        String amtStr = amountEditText.getText().toString();
-        String fromCurrency = fromSpinner.getSelectedItem().toString();
-        String toCurrency = toSpinner.getSelectedItem().toString();
+        try {
+            String amtStr = amountEditText.getText().toString();
+            String fromCurrency = fromSpinner.getSelectedItem().toString();
+            String toCurrency = toSpinner.getSelectedItem().toString();
 
-        if(amtStr.isEmpty() || amtStr.equals("."))
+            if (amtStr.isEmpty() || amtStr.equals(".")) {
+                amountEditText.setError("please enter a valid amount");
+                return;
+            }
+            double amount = Double.parseDouble(amtStr);
+            fetchExchangeRate(fromCurrency, toCurrency, amount);
+        } catch(Exception e)
         {
-            amountEditText.setError("please enter a valid amount");
-            return;
+            Toast.makeText(this, "ERROR! Please try again later.", Toast.LENGTH_LONG).show();
+            e.printStackTrace(); //to print to the terminal
         }
-        double amount = Double.parseDouble(amtStr);
-        fetchExchangeRate(fromCurrency, toCurrency, amount);   //enter a try catch later
     }
 
+    //reffered from worksheets and AI tool: Gemini
     private void fetchExchangeRate(String fromCurrency, String toCurrency, double amount) {
         String url = API_URL +
                 "?apikey=" + API_KEY +
                 "&base_currency=" + fromCurrency +
                 "&currencies=" + toCurrency;
 
-        // JsonObjectRequest is used, as demonstrated in Worksheet 9 for fetching data
+        //referred from Gemini ans worksheet 9
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    // Manual JSON Parsing (Worksheet 9 pattern for accessing attributes)
+                    //refrred from Gemini ans worksheet 9
                     JSONObject data = response.getJSONObject("data");
 
-                    // Get the exchange rate value using the 'to' currency as the key
                     double rate = data.getDouble(toCurrency);
-
-                    // Calculation: Converted_Amount = Input_Amount * Exchange_Rate
                     double convertedAmount = amount * rate;
 
                     displayConversionResult(convertedAmount, toCurrency);
-                    // Use a simple Toast for success feedback (Worksheet 6 pattern)
+                    //worksheet 6
                     Toast.makeText(ConverterActivity.this, "Conversion successful", Toast.LENGTH_SHORT).show();
 
                 } catch (org.json.JSONException e) {
@@ -151,8 +150,7 @@ public class ConverterActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Simple error handling using Toast (Worksheet 6 pattern)
-                Toast.makeText(ConverterActivity.this, "ERROR: API request failed (Check API Key/Internet).", Toast.LENGTH_LONG).show();
+                Toast.makeText(ConverterActivity.this, "ERROR! Please try again later.", Toast.LENGTH_LONG).show();
             }
         });
 
