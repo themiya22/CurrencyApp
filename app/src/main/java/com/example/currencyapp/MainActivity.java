@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
-
-
-
+    // Opens the conversion history screen when the history button is clicked
+    public void openHistoryActivity(View view) {
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
+    }
 }

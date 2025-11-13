@@ -2,6 +2,7 @@ package com.example.currencyapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+// Import for Firebase Firestore
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONObject;
 
@@ -41,11 +44,16 @@ public class ConverterActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private DecimalFormat decimalFormat;
 
+    // Firebase Firestore database instance for saving conversion history
+    private FirebaseFirestore db;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_converter);
+        // Initialize the Firebase Firestore instance
+        db = FirebaseFirestore.getInstance();
 
         //initializing volley (referred from AI: Gemini)
         requestQueue = Volley.newRequestQueue(this);
@@ -117,7 +125,7 @@ public class ConverterActivity extends AppCompatActivity {
             return;
         }
         double amount = Double.parseDouble(amtStr);
-        fetchExchangeRate(fromCurrency, toCurrency, amount);   //enter a try catch later
+        fetchExchangeRate(fromCurrency, toCurrency, amount);
     }
 
     private void fetchExchangeRate(String fromCurrency, String toCurrency, double amount) {
@@ -126,22 +134,20 @@ public class ConverterActivity extends AppCompatActivity {
                 "&base_currency=" + fromCurrency +
                 "&currencies=" + toCurrency;
 
-        // JsonObjectRequest is used, as demonstrated in Worksheet 9 for fetching data
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    // Manual JSON Parsing (Worksheet 9 pattern for accessing attributes)
+
                     JSONObject data = response.getJSONObject("data");
 
-                    // Get the exchange rate value using the 'to' currency as the key
                     double rate = data.getDouble(toCurrency);
 
-                    // Calculation: Converted_Amount = Input_Amount * Exchange_Rate
                     double convertedAmount = amount * rate;
 
                     displayConversionResult(convertedAmount, toCurrency);
-                    // Use a simple Toast for success feedback (Worksheet 6 pattern)
+                    // After a successful conversion, save the details to Firebase Firestore
+                    saveConversionToHistory(fromCurrency, toCurrency, amount, convertedAmount);
                     Toast.makeText(ConverterActivity.this, "Conversion successful", Toast.LENGTH_SHORT).show();
 
                 } catch (org.json.JSONException e) {
@@ -151,7 +157,7 @@ public class ConverterActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Simple error handling using Toast (Worksheet 6 pattern)
+
                 Toast.makeText(ConverterActivity.this, "ERROR: API request failed (Check API Key/Internet).", Toast.LENGTH_LONG).show();
             }
         });
@@ -163,5 +169,31 @@ public class ConverterActivity extends AppCompatActivity {
         String formattedResult = decimalFormat.format(result) + " " + currencyCode;
         resultTextView.setText(formattedResult);
         resultLabelTextView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Saves the details of a successful conversion to the Firebase Firestore database.
+     * It creates a new ConversionHistoryItem object and adds it to the "conversionHistory" collection.
+     * @param fromCurrency The currency code converted from.
+     * @param toCurrency The currency code converted to.
+     * @param originalAmount The original amount before conversion.
+     * @param convertedAmount The resulting amount after conversion.
+     */
+    private void saveConversionToHistory(String fromCurrency, String toCurrency, double originalAmount, double convertedAmount) {
+        // Create a new history item object with the conversion details.
+        ConversionHistoryItem item = new ConversionHistoryItem(fromCurrency, toCurrency, originalAmount, convertedAmount);
+        // Add the item to the "conversionHistory" collection in Firestore.
+        // Firestore automatically creates the collection if it doesn't exist.
+        db.collection("conversionHistory")
+                .add(item)
+                .addOnSuccessListener(documentReference -> {
+                    // Log a success message for debugging.
+                    Log.d("Firestore", "Conversion history saved with ID: " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> {
+                    // Log an error message and show a toast if saving fails.
+                    Log.w("Firestore", "Error adding document", e);
+                    Toast.makeText(ConverterActivity.this, "Failed to save history.", Toast.LENGTH_SHORT).show();
+                });
     }
 }
