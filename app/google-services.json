@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "381864653722",
+    "project_id": "currencyappject",
+    "storage_bucket": "currencyappject.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381864653722:android:89e1df323ab13b38a24023",
+        "android_client_info": {
+          "package_name": "com.example.currencyapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwsXgU61b0nRNWgknuvh4Xy6h-vuAlo7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
