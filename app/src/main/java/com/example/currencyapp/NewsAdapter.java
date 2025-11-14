@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-//Reference 02: written based on a youtube tutorial : https://youtu.be/Mc0XT58A1Z4?si=-zYzgs2nY50-yxp-
+//Reference 02: written based on the lab worksheets and a youtube tutorial : https://youtu.be/Mc0XT58A1Z4?si=-zYzgs2nY50-yxp-
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
     Context context;

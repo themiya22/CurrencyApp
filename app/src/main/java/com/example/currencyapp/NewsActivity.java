@@ -36,7 +36,7 @@ public class NewsActivity extends AppCompatActivity {
         //Fetchig data from api using volley library
         //Refference 01: written based on a youtube tutorial : https://www.youtube.com/watch?v=MgEsNXwj0lY)
 
-        String api_url="https://newsdata.io/api/1/crypto?apikey=pub_4520359fa1ce45ac9534d824325f4ed2&q=foreign%20exchange&language=en";
+        String api_url="https://newsdata.io/api/1/crypto?apikey=pub_b9a7431cd19e447b8d26e88c38ae3d03&q=foreign%20exchange&language=en";
         JsonObjectRequest request=new JsonObjectRequest(api_url, null, new Response.Listener<JSONObject>() {
 
             @Override
