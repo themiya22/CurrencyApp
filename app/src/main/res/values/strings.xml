@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">CurrencyApp</string>
+
+    <string name="converter_activity_label">Currency Converter</string>
+    <string name="converter_initial_value">1.00</string>
+
+    <string-array name="currency_codes">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>GBP</item>
+        <item>JPY</item>
+        <item>CAD</item>
+        <item>AUD</item>
+        <item>CNY</item>
+        <item>INR</item>
+        <item>BRL</item>
+        <item>KRW</item>
+        <item>NZD</item>
+    </string-array>
 </resources>

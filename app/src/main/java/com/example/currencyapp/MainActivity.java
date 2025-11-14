@@ -28,4 +28,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NewsActivity.class);
         startActivity(intent);
     }
+
+    public void openConverterActivity(View view) {
+        Intent intent = new Intent(this, ConverterActivity.class);
+        startActivity(intent);
+    }
+
+    // Opens the conversion history screen when the history button is clicked
+    public void openHistoryActivity(View view) {
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
+    }
 }
