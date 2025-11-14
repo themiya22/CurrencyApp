@@ -10,7 +10,7 @@ public class ConversionHistoryItem {
     private double convertedAmount;
     private Date timestamp;
 
-    // Required empty public constructor for Firestore deserialization
+    //public constructor for Firestore deserialization
     public ConversionHistoryItem() {
     }
 
