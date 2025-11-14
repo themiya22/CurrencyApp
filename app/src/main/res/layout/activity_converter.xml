@@ -4,17 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="#E0D9E1"
+
     tools:context=".ConverterActivity">
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="5dp"
-
-        android:layout_marginTop="11dp"
-        android:background="#DED488"
+        android:layout_marginTop="10dp"
+        android:background="@color/light_bagde"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         tools:layout_editor_absoluteX="16dp" />
 
@@ -22,14 +20,12 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="64dp"
         android:fontFamily="serif-monospace"
         android:text="Currency Converter"
-        android:textColor="@color/darkgold"
+        android:textColor="@color/dark_bagde"
         android:textSize="24sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +33,8 @@
         android:id="@+id/lblAmount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="56dp"
         android:fontFamily="serif-monospace"
         android:text="Enter Amount"
         android:textSize="16sp"
@@ -58,7 +55,8 @@
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lblAmount" />
+        app:layout_constraintTop_toBottomOf="@id/lblAmount"
+        android:layout_marginHorizontal="16dp"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_center"
@@ -132,7 +130,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout2"
-        app:layout_constraintWidth_percent="0.5"/>
+        app:layout_constraintWidth_percent="0.5"
+        android:textColor="@color/button_foreground"
+        android:background="@color/button_background"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/lblResults"
@@ -141,7 +143,7 @@
         android:layout_marginTop="40dp"
         android:fontFamily="serif-monospace"
         android:text="Converted Amount"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -163,26 +165,49 @@
         app:layout_constraintTop_toBottomOf="@+id/lblResults"
         tools:text="1.07 EUR" />
 
-    <Button
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="60dp"
+        android:layout_marginHorizontal="20dp">
+
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="168dp"
+            android:layout_height="44dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/button_background"
+            android:text="Home"
+            android:textColor="@color/button_foreground"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtResults" />
+
+        <Button
         android:id="@+id/btnClear"
         android:layout_width="168dp"
         android:layout_height="44dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginLeft="10dp"
         android:text="Clear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtResults" />
+        app:layout_constraintTop_toBottomOf="@+id/btnClear"
+        android:textColor="@color/button_foreground"
+        android:background="@color/button_background"
+        android:textSize="14dp"
+        android:textStyle="bold"/>
 
-    <Button
-        android:id="@+id/btnHome"
-        android:layout_width="168dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="8dp"
-        android:text="Home"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnClear" />
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

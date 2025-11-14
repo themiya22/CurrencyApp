@@ -13,60 +13,64 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.currencyapp.NewsArticle;
+
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
-
+//Reference 02: written based on a youtube tutorial : https://youtu.be/Mc0XT58A1Z4?si=-zYzgs2nY50-yxp-
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
-    private List<NewsArticle> articles;
-    private Context context;
+    Context context;
+    List<NewsArticleModel> articles;
 
-    public NewsAdapter(Context context, List<NewsArticle> articles) {
-        this.context = context;
+    public NewsAdapter(Context context, List<NewsArticleModel> articles){
+        this.context= context;
         this.articles = articles;
+
     }
+
 
     @NonNull
     @Override
-    public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_layout, parent, false);
-        return new NewsViewHolder(view);
+    public NewsAdapter.NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.list_item_layout,parent,false);
+        return new NewsAdapter.NewsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
-        NewsArticle article = articles.get(position);
-        holder.title.setText(article.getTitle());
-        holder.date.setText(article.getPubDate());
+    public void onBindViewHolder(@NonNull NewsAdapter.NewsViewHolder holder, int position) {
+        holder.tvTittle.setText(articles.get(position).getTitle());
+        holder.tvDate.setText(articles.get(position).getPubDate());
+
+        //using picasso to load image from url
+        //Refference 03: https://www.geeksforgeeks.org/android/how-to-use-picasso-image-loader-library-in-android/
+        String imgUrl = articles.get(position).getImage_url();
+        Picasso.get().load(imgUrl).placeholder(R.drawable.alt_image).resize(320, 300).into(holder.imgView);
 
 
-        if(article.getImage_url()==null || article.getImage_url().isEmpty()){
-            holder.image.setImageResource(R.drawable.alt_image);
-        }else {
-            Picasso.get().load(article.getImage_url()).into(holder.image);
-        }
 
-        //-----------------buged area--------------------------------
         holder.readMorebtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String url = article.getLink();
-                if (url == null || url.isEmpty()) {
-                    //if link not available
-                    Toast.makeText(context, "Link not available", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                String link = articles.get(position).getLink();
 
-                } else {
-                    // if link is available opens browser with link
-
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    context.startActivity(browserIntent);
-
+                if(link!=null){
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    try{
+                        context.startActivity(browserIntent);
+                    }
+                    catch (Exception e){
+                        Toast.makeText(context, "Sorry no link to source", Toast.LENGTH_SHORT).show();
+                    }
                 }
+                else{
+                    Toast.makeText(context, "Sorry no link to source", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
-
     }
 
     @Override
@@ -75,22 +79,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder {
-        TextView title, country, date;
-        ImageView image;
-        Button readMorebtn;
 
+        TextView tvTittle,tvDate;
+        ImageView imgView;
+        Button readMorebtn;
 
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.tittlelbl);
-            date = itemView.findViewById(R.id.datelbl);
-            image = itemView.findViewById(R.id.imageView);
+
+            tvTittle = itemView.findViewById(R.id.tittlelbl);
+            tvDate = itemView.findViewById(R.id.datelbl);
+            imgView = itemView.findViewById(R.id.imageView);
             readMorebtn = itemView.findViewById(R.id.readmorebtn);
         }
-
-
-
-
-
     }
 }
