@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 // Import for Firebase Firestore
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
@@ -32,11 +33,8 @@ public class ConverterActivity extends AppCompatActivity {
     private Spinner toSpinner;
     private TextView resultLabelTextView;
     private TextView resultTextView;
-    private Button btnConvert;
-    private Button btnClear;
-    private Button btnHome;
 
-    //API config
+    //API config (referred according worksheet 9)
     private static final String API_KEY = "fca_live_EfykldLsC9ilp6eghX4GRJWkmlvHEmkoeu9e8f5X";
     private static final String API_URL = "https://api.freecurrencyapi.com/v1/latest";
 
@@ -114,57 +112,66 @@ public class ConverterActivity extends AppCompatActivity {
         Toast.makeText(this, "Fields Cleared", Toast.LENGTH_SHORT).show();
     }
 
+    //performing the conversion for necessary inputs.
+    //refered from worksheets and some parts were improved by refrring to AI tool: Gemini
     private void performConversion() {
-        String amtStr = amountEditText.getText().toString();
-        String fromCurrency = fromSpinner.getSelectedItem().toString();
-        String toCurrency = toSpinner.getSelectedItem().toString();
+        try {
 
-        if(amtStr.isEmpty() || amtStr.equals("."))
+            String amtStr = amountEditText.getText().toString();
+            String fromCurrency = fromSpinner.getSelectedItem().toString();
+            String toCurrency = toSpinner.getSelectedItem().toString();
+
+            if (amtStr.isEmpty() || amtStr.equals(".")) {
+                amountEditText.setError("please enter a valid amount");
+                return;
+            }
+            double amount = Double.parseDouble(amtStr);
+            fetchExchangeRate(fromCurrency, toCurrency, amount);
+        } catch (Exception e)
         {
-            amountEditText.setError("please enter a valid amount");
-            return;
+            Toast.makeText(this, "ERROR! Please try again later.", Toast.LENGTH_LONG).show();
+            e.printStackTrace(); //to print to the terminal, reffered from worksheets
         }
-        double amount = Double.parseDouble(amtStr);
-        fetchExchangeRate(fromCurrency, toCurrency, amount);
     }
 
+    //fetching data from API. reffered from worksheets and AI tool: Gemini
     private void fetchExchangeRate(String fromCurrency, String toCurrency, double amount) {
         String url = API_URL +
                 "?apikey=" + API_KEY +
                 "&base_currency=" + fromCurrency +
                 "&currencies=" + toCurrency;
-
+        //referred from worksheet 9 and improved by AI tool: Gemini
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-
+                    //refrred from Gemini ans worksheet 9 and AI tool: Gemini
                     JSONObject data = response.getJSONObject("data");
 
                     double rate = data.getDouble(toCurrency);
-
                     double convertedAmount = amount * rate;
-
                     displayConversionResult(convertedAmount, toCurrency);
+
                     // After a successful conversion, save the details to Firebase Firestore
                     saveConversionToHistory(fromCurrency, toCurrency, amount, convertedAmount);
                     Toast.makeText(ConverterActivity.this, "Conversion successful", Toast.LENGTH_SHORT).show();
 
-                } catch (org.json.JSONException e) {
-                    Toast.makeText(ConverterActivity.this, "API Error: Invalid response or currency not found.", Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(ConverterActivity.this, "API Error!! Try again", Toast.LENGTH_LONG).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
-                Toast.makeText(ConverterActivity.this, "ERROR: API request failed (Check API Key/Internet).", Toast.LENGTH_LONG).show();
+                Toast.makeText(ConverterActivity.this, "ERROR!! API request failed", Toast.LENGTH_LONG).show();
             }
         });
-
         requestQueue.add(request);
+
     }
 
+    //displaying converted results to the text view
     private void displayConversionResult(double result, String currencyCode) {
         String formattedResult = decimalFormat.format(result) + " " + currencyCode;
         resultTextView.setText(formattedResult);
@@ -196,4 +203,5 @@ public class ConverterActivity extends AppCompatActivity {
                     Toast.makeText(ConverterActivity.this, "Failed to save history.", Toast.LENGTH_SHORT).show();
                 });
     }
+
 }
