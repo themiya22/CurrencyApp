@@ -53,7 +53,7 @@ public class ConverterActivity extends AppCompatActivity {
         // Initialize the Firebase Firestore instance
         db = FirebaseFirestore.getInstance();
 
-        //initializing volley (referred from AI: Gemini)
+        //initializing volley. reffered from worksheet and  from AI: Gemini
         requestQueue = Volley.newRequestQueue(this);
         decimalFormat = new DecimalFormat("#.##");
 
