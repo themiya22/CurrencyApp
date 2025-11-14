@@ -6,14 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".HistoryActivity">
 
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/light_bagde"
+        app:layout_constraintTop_toBottomOf="@+id/newslbl"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/newslbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:fontFamily="serif-monospace"
+        android:text="History"
+        android:textColor="@color/dark_bagde"
+        android:textFontWeight="300"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/history_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/button_layout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/button_layout"
@@ -22,21 +47,34 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="60dp"
+        android:layout_marginHorizontal="20dp">
+
 
         <Button
             android:id="@+id/btn_home"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Home" />
+            android:text="Home"
+            android:textColor="@color/button_foreground"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:background="@color/button_background"
+            android:layout_marginRight="10dp"/>
 
         <Button
             android:id="@+id/btn_clear_history"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Clear History" />
+            android:text="Clear History"
+            android:textColor="@color/button_foreground"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:background="@color/button_background"
+            android:layout_marginLeft="10dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

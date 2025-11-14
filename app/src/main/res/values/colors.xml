@@ -6,5 +6,9 @@
     <color name="gloomyblue">#507C92</color>
     <color name="darkgold">#AB8D13</color>
     <color name="lightgold">#DED488</color>
+    <color name="button_background">#444444</color>
+    <color name="button_foreground">#FFFFFF</color>
+    <color name="dark_bagde">#A4936E</color>
+    <color name="light_bagde">#C8C3B2</color>
 
 </resources>
