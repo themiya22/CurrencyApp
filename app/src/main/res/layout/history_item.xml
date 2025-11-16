@@ -15,6 +15,7 @@
             android:id="@+id/conversion_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:text="100 USD to 8,321.00 LKR"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +23,8 @@
 
         <TextView
             android:id="@+id/timestamp_text"
+            android:fontFamily="monospace"
+            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2024-05-15 10:30 AM"
