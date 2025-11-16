@@ -55,7 +55,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             @Override
             public void onClick(View view) {
                 String link = articles.get(position).getLink();
-
+                
                 //safe guard for no source link responses
                 if(link!=null){
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
