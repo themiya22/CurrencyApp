@@ -48,7 +48,7 @@ public class HistoryActivity extends AppCompatActivity {
         fetchConversionHistory();
     }
 
-    // Fetch conversion history (referred from AI: Gemini)
+    // Fetch conversion history (Referred from AI: Gemini)
     private void fetchConversionHistory() {
         db.collection("conversionHistory")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
