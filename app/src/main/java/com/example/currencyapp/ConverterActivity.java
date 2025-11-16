@@ -176,14 +176,7 @@ public class ConverterActivity extends AppCompatActivity {
         resultLabelTextView.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Saves the details of a successful conversion to the Firebase Firestore database.
-     * It creates a new ConversionHistoryItem object and adds it to the "conversionHistory" collection.
-     * @param fromCurrency The currency code converted from.
-     * @param toCurrency The currency code converted to.
-     * @param originalAmount The original amount before conversion.
-     * @param convertedAmount The resulting amount after conversion.
-     */
+    // Save the conversion details to the database
     private void saveConversionToHistory(String fromCurrency, String toCurrency, double originalAmount, double convertedAmount) {
         // Create a new history item object with the conversion details.
         ConversionHistoryItem item = new ConversionHistoryItem(fromCurrency, toCurrency, originalAmount, convertedAmount);
