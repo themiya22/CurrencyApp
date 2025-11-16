@@ -61,7 +61,6 @@ public class ConverterActivity extends AppCompatActivity {
         amountEditText = findViewById(R.id.TxtAmount);
         fromSpinner = findViewById(R.id.spinner_FROM);
         toSpinner = findViewById(R.id.spinner_To);
-        resultLabelTextView = findViewById(R.id.lblResults);
         Button btnConvert = findViewById(R.id.btnConvert);
         Button btnClear = findViewById(R.id.btnClear);
         Button btnHome = findViewById(R.id.btnHome);
@@ -70,7 +69,6 @@ public class ConverterActivity extends AppCompatActivity {
         resultLabelTextView = findViewById(R.id.lblResults);
         resultTextView = findViewById(R.id.txtResults);
 
-        resultLabelTextView.setVisibility(View.GONE); //to make the label disapear when the screen opens
         resultTextView.setText(getString(R.string.converter_initial_value)); // set a readable intial val
 
         btnConvert.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +143,7 @@ public class ConverterActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    //refrred from Gemini ans worksheet 9 and AI tool: Gemini
+                    //refrred from worksheet 9 and AI tool: Gemini
                     JSONObject data = response.getJSONObject("data");
 
                     double rate = data.getDouble(toCurrency);
